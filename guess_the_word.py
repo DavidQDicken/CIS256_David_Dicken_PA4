@@ -23,26 +23,38 @@ def display_word_status(selected_word, guessed_letters):
     return word_status
 
 
-selected_word = random.choice(words)
-guessed_letters = []
-strikes = 0
-
-print("Guess the word using one letter at a time.")
-
-while strikes < 3:
-    print()
-    print(display_word_status(selected_word, guessed_letters))
-    print("Letters guessed:", guessed_letters)
-    print("strikes:", strikes)
-    print()
-    guess = input("Please guess a letter: ").lower().strip()
-
-    if guess not in guessed_letters:
-        guessed_letters.append(guess)
-
-        if guess not in  selected_word:
-            strikes = strikes + 1
+def check_guess(strikes, guess, selected_word, guessed_letters):
+    if len(guess) != 1 or not guess.isalpha():
+        print("Please enter one letter.")
     else:
-        print("You have already guessed this letter.")
+        if guess not in guessed_letters:
+            guessed_letters.append(guess)
+            if guess not in  selected_word:
+                print("Wrong guess!")
+                strikes = strikes + 1
+            else:
+                print("Correct guess!")
+        else:
+            print("You have already guessed this letter.")
+    return strikes
 
-print("Three strikes! You are out!")
+def start_game():
+    selected_word = random.choice(words)
+    guessed_letters = []
+    strikes = 0
+
+    print("Guess the word using one letter at a time.")
+
+    while strikes < 3:
+        print()
+        print(display_word_status(selected_word, guessed_letters))
+        print("Letters guessed:", guessed_letters)
+        print("strikes:", strikes)
+        print()
+        guess = input("Please guess a letter: ").lower().strip()
+        strikes = check_guess(strikes, guess, selected_word, guessed_letters)
+
+    print("Three strikes! You are out!")
+
+if __name__ == "__main__":
+    start_game()
