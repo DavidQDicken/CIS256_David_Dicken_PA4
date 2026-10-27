@@ -12,16 +12,37 @@ import random
 
 words = ["music", "school", "garage", "sky", "banana"]
 
+
+def display_word_status(selected_word, guessed_letters):
+    word_status = ""
+    for letter in selected_word:
+        if letter not in guessed_letters:
+            word_status += "_"
+        else:
+            word_status += letter
+    return word_status
+
+
 selected_word = random.choice(words)
 guessed_letters = []
-attempts = 3
+strikes = 0
 
 print("Guess the word using one letter at a time.")
 
-while attempts > 0:
+while strikes < 3:
     print()
-    print(selected_word)
-    print("You have", attempts, "attempts remaining.\n")
+    print(display_word_status(selected_word, guessed_letters))
+    print("Letters guessed:", guessed_letters)
+    print("strikes:", strikes)
+    print()
     guess = input("Please guess a letter: ").lower().strip()
-    if guess not in selected_word:
-        attempts = attempts - 1
+
+    if guess not in guessed_letters:
+        guessed_letters.append(guess)
+
+        if guess not in  selected_word:
+            strikes = strikes + 1
+    else:
+        print("You have already guessed this letter.")
+
+print("Three strikes! You are out!")
